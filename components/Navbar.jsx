@@ -11,6 +11,7 @@ export default function Navbar() {
         <li><Link to="/company">Company</Link></li>
         <li><Link to="/reports">Reports</Link></li>
       </ul>
+      <div className ="flex"></div>
     </nav>
   )
 }
