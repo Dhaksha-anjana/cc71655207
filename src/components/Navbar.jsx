@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 export default function Navbar() {
   return (
-    <nav className="flex justify-between items-center p-4 shadow-md bg-gradient-to-r from-rose-100 via-indigo-100 to-blue-100">
-      <div className="font-bold text-xl text-gray-800">TalentTrack</div>
-      <ul className="flex gap-6 text-sm text-blue-700 font-medium">
+    <nav className="w-full bg-gradient-to-r from-pink-100 via-indigo-100 to-blue-100 shadow-md py-4 px-6 flex justify-between items-center">
+      <div className="text-xl font-bold text-gray-800">TalentTrack</div>
+      <ul className="flex gap-6 text-sm font-medium text-blue-700">
         <li><Link to="/">Dashboard</Link></li>
         <li><Link to="/candidates">Candidates</Link></li>
         <li><Link to="/jobs">Jobs</Link></li>
@@ -14,3 +14,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

@@ -15,13 +15,13 @@ export default function Welcome() {
       <div className="flex gap-4">
         <a
           href="/candidates"
-          className="bg-purple-700 text-white px-6 py-3 rounded-md hover:bg-purple-200 transition"
+          className="bg-white-700 text-white px-6 py-3 rounded-md hover:bg-white-200"
         >
           View Candidates
         </a>
         <a
           href="/add"
-          className="bg-pink-600 text-white px-6 py-3 rounded-md hover:bg-pink-600 transition"
+          className="bg-white-600 text-white px-6 py-3 rounded-md hover:bg-white-600 "
         >
           Add Candidate
         </a>
