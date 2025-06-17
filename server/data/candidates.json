@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Dhaksha",
+    "email": "dhakshha@gmail.com",
+    "phoneNumber": "123",
+    "skills": "designer",
+    "experience": "prof",
+    "desiredRole": "frontend",
+    "id": 1750181396567
+  },
+  {
+    "name": "Anjana",
+    "email": "dhakshhha@gmail.com",
+    "phoneNumber": "12345",
+    "skills": "web designer",
+    "experience": "professor",
+    "desiredRole": "backend",
+    "id": 1750181651754
+  }
+]
