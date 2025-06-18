@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import axios from 'axios';
 import FormInput from '../components/FormInput';
 
 export default function AddCandidate() {
@@ -18,9 +19,9 @@ export default function AddCandidate() {
 
   useEffect(() => {
     if (editId) {
-      const existing = JSON.parse(localStorage.getItem('candidates')) || [];
-      const toEdit = existing.find((c) => c.id === parseInt(editId));
-      if (toEdit) setFormData(toEdit);
+      axios.get(`http://localhost:5000/api/candidates/${editId}`)
+        .then(res => setFormData(res.data))
+        .catch(err => console.error("Failed to fetch candidate", err));
     }
   }, [editId]);
 
@@ -28,23 +29,22 @@ export default function AddCandidate() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const existing = JSON.parse(localStorage.getItem('candidates')) || [];
 
-    if (editId) {
-      const updated = existing.map((c) =>
-        c.id === parseInt(editId) ? { ...formData, id: parseInt(editId) } : c
-      );
-      localStorage.setItem('candidates', JSON.stringify(updated));
-      alert('Candidate updated!');
-    } else {
-      const updated = [...existing, { ...formData, id: Date.now() }];
-      localStorage.setItem('candidates', JSON.stringify(updated));
-      alert('Candidate added!');
+    try {
+      if (editId) {
+        await axios.put(`http://localhost:5000/api/candidates/${editId}`, formData);
+        alert('Candidate updated!');
+      } else {
+        await axios.post('http://localhost:5000/api/candidates', formData);
+        alert('Candidate added!');
+      }
+      navigate('/candidates');
+    } catch (error) {
+      console.error(error);
+      alert('Failed to submit candidate');
     }
-
-    navigate('/candidates');
   };
 
   return (
@@ -77,7 +77,7 @@ export default function AddCandidate() {
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md p-3 text-black"
           >
-            <option>Select role</option>
+            <option value="">Select role</option>
             <option>Frontend Developer</option>
             <option>Backend Developer</option>
             <option>Fullstack Developer</option>
