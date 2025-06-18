@@ -1,16 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import FormInput from '../components/FormInput';
-import axios from 'axios';
 
 export default function AddCandidate() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    phoneNumber: '',
+    phone: '',
     skills: '',
     experience: '',
-    desiredRole: '',
+    role: '',
   });
 
   const navigate = useNavigate();
@@ -19,9 +18,9 @@ export default function AddCandidate() {
 
   useEffect(() => {
     if (editId) {
-      axios.get(`http://localhost:5000/api/candidates/${editId}`)
-        .then(res => setFormData(res.data))
-        .catch(err => console.error("Failed to load candidate:", err));
+      const existing = JSON.parse(localStorage.getItem('candidates')) || [];
+      const toEdit = existing.find((c) => c.id === parseInt(editId));
+      if (toEdit) setFormData(toEdit);
     }
   }, [editId]);
 
@@ -29,22 +28,23 @@ export default function AddCandidate() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    const existing = JSON.parse(localStorage.getItem('candidates')) || [];
 
-    try {
-      if (editId) {
-        await axios.put(`http://localhost:5000/api/candidates/${editId}`, formData);
-        alert("Candidate updated!");
-      } else {
-        await axios.post('http://localhost:5000/api/candidates', formData);
-        alert("Candidate added!");
-      }
-      navigate('/candidates');
-    } catch (err) {
-      console.error("Error submitting form:", err);
-      alert("Failed to submit candidate.");
+    if (editId) {
+      const updated = existing.map((c) =>
+        c.id === parseInt(editId) ? { ...formData, id: parseInt(editId) } : c
+      );
+      localStorage.setItem('candidates', JSON.stringify(updated));
+      alert('Candidate updated!');
+    } else {
+      const updated = [...existing, { ...formData, id: Date.now() }];
+      localStorage.setItem('candidates', JSON.stringify(updated));
+      alert('Candidate added!');
     }
+
+    navigate('/candidates');
   };
 
   return (
@@ -55,7 +55,7 @@ export default function AddCandidate() {
       <form onSubmit={handleSubmit}>
         <FormInput label="Full Name" name="name" type="text" placeholder="Enter full name" value={formData.name} onChange={handleChange} />
         <FormInput label="Email" name="email" type="email" placeholder="Enter email" value={formData.email} onChange={handleChange} />
-        <FormInput label="Phone Number" name="phoneNumber" type="text" placeholder="Enter phone number" value={formData.phoneNumber} onChange={handleChange} />
+        <FormInput label="Phone Number" name="phone" type="text" placeholder="Enter phone number" value={formData.phone} onChange={handleChange} />
         <FormInput label="Skills" name="skills" type="text" placeholder="Enter skills" value={formData.skills} onChange={handleChange} />
 
         <div className="mb-4">
@@ -72,12 +72,12 @@ export default function AddCandidate() {
         <div className="mb-4">
           <label className="block text-sm font-medium mb-1 text-black">Desired Role</label>
           <select
-            name="desiredRole"
-            value={formData.desiredRole}
+            name="role"
+            value={formData.role}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-md p-3 text-black"
           >
-            <option value="">Select role</option>
+            <option>Select role</option>
             <option>Frontend Developer</option>
             <option>Backend Developer</option>
             <option>Fullstack Developer</option>
