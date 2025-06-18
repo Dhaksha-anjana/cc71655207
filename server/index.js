@@ -5,6 +5,8 @@ const path = require('path');
 
 const app = express();
 const PORT = 5000;
+const Candidate = require('./models/Candidate');
+
 
 // Create path to candidate data
 const DATA_PATH = path.join(__dirname, 'data', 'candidates.json');
@@ -30,6 +32,7 @@ app.get('/api/candidates', (req, res) => {
     const candidates = readCandidates();
     res.json(candidates);
   } catch (error) {
+    console.log("error",error)
     res.status(500).json({ message: 'Error reading candidates data' });
   }
 });
@@ -50,13 +53,16 @@ app.get('/api/candidates/:id', (req, res) => {
 });
 
 // Create a new candidate
-app.post('/api/candidates', (req, res) => {
+app.post('/api/candidates', async(req, res) => {
   try {
-    const candidates = readCandidates();
-    const newCandidate = { ...req.body, id: Date.now() };
-    candidates.push(newCandidate);
-    writeCandidates(candidates);
-    res.status(201).json(newCandidate);
+    const newCandidate = new Candidate(req.body);
+     await newCandidate.save();
+     res.status(201).json(newCandidate);
+    // const candidates = readCandidates();
+    // const newCandidate = { ...req.body, id: Date.now() };
+    // candidates.push(newCandidate);
+    // writeCandidates(candidates);
+    // res.status(201).json(newCandidate);
   } catch (error) {
     res.status(500).json({ message: 'Error creating candidate' });
   }
