@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1750345731500,
+    "title": "full stack",
+    "department": "AI&DS",
+    "location": "IITMR",
+    "salary": "77777",
+    "description": "de",
+    "company": "Google"
+  },
+  {
+    "id": 1750346215488,
+    "title": "Backend",
+    "department": "ece",
+    "location": "IITMR",
+    "salary": "120000",
+    "description": "Create",
+    "company": "Adobe"
+  }
+]

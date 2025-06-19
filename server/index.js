@@ -6,6 +6,10 @@ const path = require('path');
 const app = express();
 const PORT = 5000;
 const Candidate = require('./models/Candidate');
+const JOBS_PATH = path.join(__dirname, 'data', 'jobs.json');
+
+const readJobs = () => JSON.parse(fs.readFileSync(JOBS_PATH, 'utf8'));
+const writeJobs = (data) => fs.writeFileSync(JOBS_PATH, JSON.stringify(data, null, 2));
 
 
 // Create path to candidate data
@@ -96,11 +100,44 @@ app.delete('/api/candidates/:id', (req, res) => {
 });
 
 // Handle undefined routes
+// Get all jobs
+app.get('/api/jobs', (req, res) => {
+  try {
+    const jobs = readJobs();
+    res.json(jobs);
+  } catch (error) {
+    res.status(500).json({ message: 'Error reading job data' });
+  }
+});
+
+// Add a new job
+app.post('/api/jobs', (req, res) => {
+  try {
+    const jobs = readJobs();
+    const newJob = { id: Date.now(), ...req.body };
+    jobs.push(newJob);
+    writeJobs(jobs);
+    res.status(201).json(newJob);
+  } catch (error) {
+    res.status(500).json({ message: 'Error creating job' });
+  }
+});
+
+// Delete a job
+app.delete('/api/jobs/:id', (req, res) => {
+  try {
+    let jobs = readJobs();
+    jobs = jobs.filter(job => job.id !== parseInt(req.params.id));
+    writeJobs(jobs);
+    res.json({ message: 'Job deleted successfully' });
+  } catch (error) {
+    res.status(500).json({ message: 'Error deleting job' });
+  }
+});
 app.use((req, res) => {
   res.status(404).json({ message: 'Route not found' });
 });
-
 // Start the server
 app.listen(PORT, () => {
-  console.log(`Candidate API server running at http://localhost:${PORT}`);
+  console.log(`Candidate and Job API server running at http://localhost:${PORT}`);
 });
