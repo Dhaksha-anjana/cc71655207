@@ -10,6 +10,9 @@ export default function Navbar() {
         <li><Link to="/jobs">Jobs</Link></li>
         <li><Link to="/company">Company</Link></li>
         <li><Link to="/reports">Reports</Link></li>
+        <li><Link to="/add-job" className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">
+  + Add Job
+</Link></li>
       </ul>
     </nav>
   );

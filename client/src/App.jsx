@@ -7,6 +7,7 @@ import Jobs from './pages/Jobs';
 import Company from './pages/Company';
 import Reports from './pages/Reports';
 import Dashboard from './pages/Dashboard';
+import AddJob from './pages/AddJob';
 export default function App() {
   return (
     <Router>
@@ -20,6 +21,7 @@ export default function App() {
             <Route path="/jobs" element={<Jobs />} />
             <Route path="/company" element={<Company />} />
             <Route path="/reports" element={<Reports />} />
+             <Route path="/add-job" element={<AddJob />} />
             <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
         </main>
