@@ -22,7 +22,7 @@ export default function AddJob() {
     e.preventDefault();
 
     try {
-      await axios.post('http://localhost:5000/api/jobs', formData);
+      await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/jobs`, formData);
       alert('Job added successfully!');
       navigate('/jobs'); // Redirect to jobs page
     } catch (error) {

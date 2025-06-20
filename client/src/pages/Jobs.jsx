@@ -20,7 +20,7 @@ export default function Jobs() {
   const [jobs, setJobs] = useState([]);
 
   useEffect(() => {
-    axios.get('http://localhost:5000/api/jobs')
+    axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/jobs`)
       .then((res) => setJobs(res.data))
       .catch((err) => console.error('Error fetching jobs:', err));
   }, []);

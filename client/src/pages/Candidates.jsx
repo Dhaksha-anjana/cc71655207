@@ -12,7 +12,7 @@ export default function Candidates() {
 
   const fetchCandidates = async () => {
     try {
-      const res = await axios.get('http://localhost:5000/api/candidates');
+      const res = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/candidates`);
       setCandidates(res.data);
     } catch (error) {
       console.error('Failed to fetch candidates:', error);
@@ -21,7 +21,7 @@ export default function Candidates() {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/candidates/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BACKEND_URL}/api/candidates/${id}`);
       setCandidates((prev) => prev.filter((c) => c._id !== id));
     } catch (error) {
       console.error('Failed to delete candidate:', error);

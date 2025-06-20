@@ -19,7 +19,7 @@ export default function AddCandidate() {
 
   useEffect(() => {
     if (editId) {
-      axios.get(`http://localhost:5000/api/candidates/${editId}`)
+      axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/candidates/${editId}`)
         .then(res => setFormData(res.data))
         .catch(err => console.error("Failed to fetch candidate", err));
     }
@@ -34,10 +34,10 @@ export default function AddCandidate() {
 
     try {
       if (editId) {
-        await axios.put(`http://localhost:5000/api/candidates/${editId}`, formData);
+        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/candidates/${editId}`, formData);
         alert('Candidate updated!');
       } else {
-        await axios.post('http://localhost:5000/api/candidates', formData);
+        await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/candidates`, formData);
         alert('Candidate added!');
       }
       navigate('/candidates');
