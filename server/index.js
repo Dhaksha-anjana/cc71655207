@@ -57,7 +57,19 @@ app.get('/api/candidates/:id', (req, res) => {
 });
 
 // Create a new candidate
-app.post('/api/candidates', async(req, res) => {
+app.post('/api/candidates', (req, res) => {
+  try {
+    const candidates = readCandidates();
+    const newCandidate = { ...req.body, id: Date.now() };
+    candidates.push(newCandidate);
+    writeCandidates(candidates);
+    res.status(201).json(newCandidate);
+  } catch (error) {
+    console.error("Error creating candidate:", error);
+    res.status(500).json({ message: 'Error creating candidate' });
+  }
+});
+/*app.post('/api/candidates', async(req, res) => {
   try {
     const newCandidate = new Candidate(req.body);
      await newCandidate.save();
@@ -70,7 +82,7 @@ app.post('/api/candidates', async(req, res) => {
   } catch (error) {
     res.status(500).json({ message: 'Error creating candidate' });
   }
-});
+});*/
 
 // Update a candidate
 app.put('/api/candidates/:id', (req, res) => {
